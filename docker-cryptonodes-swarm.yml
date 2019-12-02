@@ -1,215 +1,215 @@
 version: '3.6'
 
 services:
-#  bitcoincash:
-#    image: uphold/bitcoin-abc
-#    command: 
-#      -printtoconsole 
-#      -debug=0
-#      -rpcallowip=10.0.1.0/24 
-#      -rpcpassword=BdXijqwcxo20 
-#      -rpcuser=bcashuser
-#      -port=8444 
-#      -rpcport=8442
-## RPC port should not be exposed outside. Its availabe in overlay network by default
-#    volumes: 
-#      - /data/nodes/bitcoincash:/home/bitcoin/.bitcoin
-#    ports:
-#      - 8444:8444
-#    deploy:
-#      mode: replicated
-#      replicas: 1
-#      placement:
-#        constraints: [node.hostname == esel]
-#
-#  monerod:
-#    image: vlddm/monero-full-node
-#    command: 
-#      --non-interactive
-#      --rpc-bind-ip=0.0.0.0
-#      --confirm-external-bind
-#      --rpc-login=monerodaemon:McefF8dcinm3982
-#    volumes: 
-#      - /data/nodes/monero:/home/monero/.bitmonero 
-#    ports:
-#      - 18080:18080
-#      - 18081:18081
-## RPC port is 18081 by default, should not be exposed outside
-#    deploy:
-#      mode: replicated
-#      replicas: 1
-#      placement:
-#        constraints: [node.hostname == esel]
+  bitcoincash:
+    image: uphold/bitcoin-abc
+    command: 
+      -printtoconsole 
+      -debug=0
+      -rpcallowip=10.0.1.0/24 
+      -rpcpassword=BdXijqwcxo20 
+      -rpcuser=bcashuser
+      -port=8444 
+      -rpcport=8442
+# RPC port should not be exposed outside. Its availabe in overlay network by default
+    volumes: 
+      - /data/nodes/bitcoincash:/home/bitcoin/.bitcoin
+    ports:
+      - 8444:8444
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints: [node.hostname == esel]
 
-#  monero-wallet-rpc:
-#    image: vlddm/monero-full-node
-#    command: monero-wallet-rpc
-#      --daemon-host=monerod:18081
-#      --daemon-login=monerodeamon:McefF8dcinm3982
-#      --rpc-login=monerowallet:MwixdA9229sGM
-#      --rpc-bind-ip=0.0.0.0
-#      --confirm-external-bind
-#      --rpc-bind-port=18001
-#      --wallet-dir=/home/monero/.bitmonero
-#    ports:
-#      - 18001:18001
-#    volumes: 
-#      - /data/nodes/monero-wallet:/home/monero/.bitmonero 
-## RPC port is 18001, should not be exposed outside
-#    deploy:
-#      mode: replicated
-#      replicas: 1
-#      placement:
-#        constraints: [node.hostname == esel]
+  monerod:
+    image: vlddm/monero-full-node
+    command: 
+      --non-interactive
+      --rpc-bind-ip=0.0.0.0
+      --confirm-external-bind
+      --rpc-login=monerodaemon:McefF8dcinm3982
+    volumes: 
+      - /data/nodes/monero:/home/monero/.bitmonero 
+    ports:
+      - 18080:18080
+      - 18081:18081
+# RPC port is 18081 by default, should not be exposed outside
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints: [node.hostname == esel]
 
-#  dash:
-#    image: vlddm/dash-core
-#    command: 
-#      -printtoconsole
-#      -debug=0
+  monero-wallet-rpc:
+    image: vlddm/monero-full-node
+    command: monero-wallet-rpc
+      --daemon-host=monerod:18081
+      --daemon-login=monerodeamon:McefF8dcinm3982
+      --rpc-login=monerowallet:MwixdA9229sGM
+      --rpc-bind-ip=0.0.0.0
+      --confirm-external-bind
+      --rpc-bind-port=18001
+      --wallet-dir=/home/monero/.bitmonero
+    ports:
+      - 18001:18001
+    volumes: 
+      - /data/nodes/monero-wallet:/home/monero/.bitmonero 
+# RPC port is 18001, should not be exposed outside
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints: [node.hostname == esel]
+
+  dash:
+    image: vlddm/dash-core
+    command: 
+      -printtoconsole
+      -debug=0
+      -rpcallowip=10.0.1.0/24
+      -rpcpassword=Dkdd2129lsS
+      -rpcuser=dashuser
+      -rpcbind=0.0.0.0
+      -rpcport=9998
+    volumes: 
+      - /data/nodes/dash:/home/dash/.dashcore 
+    ports:
+      - 9999:9999
+#      - 127.0.0.1:9998:9998
+# RPC port is 9998 by default, should not be exposed outside
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints: [node.hostname == esel]
+
+  litecoin:
+    image: uphold/litecoin-core
 #      -rpcallowip=10.0.1.0/24
-#      -rpcpassword=Dkdd2129lsS
-#      -rpcuser=dashuser
-#      -rpcbind=0.0.0.0
-#      -rpcport=9998
-#    volumes: 
-#      - /data/nodes/dash:/home/dash/.dashcore 
-#    ports:
-#      - 9999:9999
-##      - 127.0.0.1:9998:9998
-## RPC port is 9998 by default, should not be exposed outside
-#    deploy:
-#      mode: replicated
-#      replicas: 1
-#      placement:
-#        constraints: [node.hostname == esel]
-#
-#  litecoin:
-#    image: uphold/litecoin-core
-##      -rpcallowip=10.0.1.0/24
-#    command: 
-#      -printtoconsole 
-#      -debug=0
-#      -rpcallowip=10.0.1.0/24
-#      -rpcpassword=Lidi31jeei
-#      -rpcuser=litecoin
-#      -rpcbind=0.0.0.0
-#      -rpcport=9332
+    command: 
+      -printtoconsole 
+      -debug=0
+      -rpcallowip=10.0.1.0/24
+      -rpcpassword=Lidi31jeei
+      -rpcuser=litecoin
+      -rpcbind=0.0.0.0
+      -rpcport=9332
+# RPC port should not be exposed outside. Its availabe in overlay network by default
+    volumes: 
+      - /data/nodes/litecoin:/home/litecoin/.litecoin
+    ports:
+      - 9333:9333
+# RPC port 9332
+    deploy:
+      mode: replicated
+      replicas: 1      
+      placement:
+        constraints: [node.hostname == bsel]
+  
+  bitcoin:
+    image: vlddm/bitcoin-core:0.19.0.1
+    command: 
+      -printtoconsole 
+      -debug=0
+      -rpcallowip=10.0.1.0/24 
+      -rpcpassword=Bidin2933d20 
+      -rpcuser=bitcoin
+      -rpcport=8332 
+      -rpcbind=0.0.0.0
 ## RPC port should not be exposed outside. Its availabe in overlay network by default
-#    volumes: 
-#      - /data/nodes/litecoin:/home/litecoin/.litecoin
-#    ports:
-#      - 9333:9333
-## RPC port 9332
-#    deploy:
-#      mode: replicated
-#      replicas: 1      
-#      placement:
-#        constraints: [node.hostname == bsel]
-#  
-#  bitcoin:
-#    image: vlddm/bitcoin-core:0.19.0.1
-#    command: 
-#      -printtoconsole 
-#      -debug=0
-#      -rpcallowip=10.0.1.0/24 
-#      -rpcpassword=Bidin2933d20 
-#      -rpcuser=bitcoin
-#      -rpcport=8332 
-#      -rpcbind=0.0.0.0
-### RPC port should not be exposed outside. Its availabe in overlay network by default
-#    volumes: 
-#      - /data/nodes/bitcoin:/home/bitcoin/.bitcoin
-#    ports:
-#      - 8333:8333
-#    deploy:
-#      mode: replicated
-#      replicas: 1
-#      placement:
-#        constraints: [node.hostname == bsel]
+    volumes: 
+      - /data/nodes/bitcoin:/home/bitcoin/.bitcoin
+    ports:
+      - 8333:8333
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints: [node.hostname == bsel]
 
-#  nem:
-#    image: vlddm/nem-nis-node
-### rpc port should not be exposed outside. its availabe in overlay network by default
-#    volumes: 
-#      - /data/nodes/nem:/home/nem/nem
-#    ports:
-#      - 7890:7890
-#    deploy:
-#      mode: replicated
-#      replicas: 1
-#      placement:
-#        constraints: [node.hostname == esel]
-#
-#  neo:
-#    image: vlddm/neo-full-node
-### rpc port should not be exposed outside. its availabe in overlay network by default
-#    volumes: 
-#      - /data/nodes/neo:/home/neo/data
-#    ports:
-#      - 10333:10333
-#    deploy:
-#      mode: replicated
-#      replicas: 1
-#      placement:
-#        constraints: [node.hostname == bsel]
-#
-#  ethereum:
-#    image: ethereum/client-go
-### rpc port should not be exposed outside. its availabe in overlay network by default
-#    command:
-#      --syncmode=light
-#      --nousb 
-#      --cache=1024
-#      --rpc 
-#      --rpcaddr=0.0.0.0
-#      --rpccorsdomain="*"
-#      --rpcvhosts="*"
-#      --rpcapi="eth,web3,txpool,net,personal"
-#    volumes: 
-#      - /data/nodes/ethereum:/root/.ethereum
-#    ports:
-#      - 30303:30303
-#      - 8545:8545
-##      should not be exposed outside in production
-#    deploy:
-#      mode: replicated
-#      replicas: 1
-#      placement:
-#        constraints: [node.hostname == esel]
+  nem:
+    image: vlddm/nem-nis-node
+## rpc port should not be exposed outside. its availabe in overlay network by default
+    volumes: 
+      - /data/nodes/nem:/home/nem/nem
+    ports:
+      - 7890:7890
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints: [node.hostname == esel]
 
-#  ripple:
-#    image: xrptipbot/rippled
-### rpc port should not be exposed outside. its availabe in overlay network by default
-#    volumes: 
-#      - /data/nodes/ripple:/var/lib/rippled
-#    ports:
-#      - 80:80
-##      should not be exposed outside in production
-#    deploy:
-#      mode: replicated
-#      replicas: 1
-#      placement:
-#        constraints: [node.hostname == esel]
+  neo:
+    image: vlddm/neo-full-node
+## rpc port should not be exposed outside. its availabe in overlay network by default
+    volumes: 
+      - /data/nodes/neo:/home/neo/data
+    ports:
+      - 10333:10333
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints: [node.hostname == bsel]
 
-#  status:
-#    image: vlddm/cryptonodes-status
-#    container_name: status
-#    ports:
-#      - 8085:8085
-#    environment:
-#      - BRPC_URL_Bitcoin=http://bitcoin:Bidin2933d20@bitcoin:8332
-#      - BRPC_URL_Litecoin=http://litecoin:Lidi31jeei@litecoin:9332
-#      - BRPC_URL_BitcoinCash=http://bcashuser:BdXijqwcxo20@bitcoincash:8442
-#      - BRPC_URL_Dash=http://dashuser:Dkdd2129lsS@dash:9998
-#      - BRPC_URL_Monero=http://monerodaemon:McefF8dcinm3982@monerod:18081/json_rpc
-#      - BRPC_URL_Neo=http://neo:10332
-#      - BRPC_URL_Nem=http://nem:7890
-#      - BRPC_URL_Eth=http://ethereum:8545
-#      - STATUS_PORT=8085
-#    deploy:
-#      mode: replicated
-#      replicas: 2
+  ethereum:
+    image: ethereum/client-go
+## rpc port should not be exposed outside. its availabe in overlay network by default
+    command:
+      --syncmode=light
+      --nousb 
+      --cache=1024
+      --rpc 
+      --rpcaddr=0.0.0.0
+      --rpccorsdomain="*"
+      --rpcvhosts="*"
+      --rpcapi="eth,web3,txpool,net,personal"
+    volumes: 
+      - /data/nodes/ethereum:/root/.ethereum
+    ports:
+      - 30303:30303
+      - 8545:8545
+#      should not be exposed outside in production
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints: [node.hostname == esel]
+
+  ripple:
+    image: xrptipbot/rippled
+## rpc port should not be exposed outside. its availabe in overlay network by default
+    volumes: 
+      - /data/nodes/ripple:/var/lib/rippled
+    ports:
+      - 80:80
+#      should not be exposed outside in production
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints: [node.hostname == esel]
+
+  status:
+    image: vlddm/cryptonodes-status
+    container_name: status
+    ports:
+      - 8085:8085
+    environment:
+      - BRPC_URL_Bitcoin=http://bitcoin:Bidin2933d20@bitcoin:8332
+      - BRPC_URL_Litecoin=http://litecoin:Lidi31jeei@litecoin:9332
+      - BRPC_URL_BitcoinCash=http://bcashuser:BdXijqwcxo20@bitcoincash:8442
+      - BRPC_URL_Dash=http://dashuser:Dkdd2129lsS@dash:9998
+      - BRPC_URL_Monero=http://monerodaemon:McefF8dcinm3982@monerod:18081/json_rpc
+      - BRPC_URL_Neo=http://neo:10332
+      - BRPC_URL_Nem=http://nem:7890
+      - BRPC_URL_Eth=http://ethereum:8545
+      - STATUS_PORT=8085
+    deploy:
+      mode: replicated
+      replicas: 2
 
 networks:
   default:
