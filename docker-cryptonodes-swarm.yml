@@ -19,8 +19,6 @@ services:
     deploy:
       mode: replicated
       replicas: 1
-      placement:
-        constraints: [node.hostname == esel]
 
   monerod:
     image: vlddm/monero-full-node
@@ -38,8 +36,6 @@ services:
     deploy:
       mode: replicated
       replicas: 1
-      placement:
-        constraints: [node.hostname == esel]
 
   monero-wallet-rpc:
     image: vlddm/monero-full-node
@@ -59,8 +55,6 @@ services:
     deploy:
       mode: replicated
       replicas: 1
-      placement:
-        constraints: [node.hostname == esel]
 
   dash:
     image: vlddm/dash-core
@@ -81,8 +75,6 @@ services:
     deploy:
       mode: replicated
       replicas: 1
-      placement:
-        constraints: [node.hostname == esel]
 
   litecoin:
     image: uphold/litecoin-core
@@ -104,11 +96,9 @@ services:
     deploy:
       mode: replicated
       replicas: 1      
-      placement:
-        constraints: [node.hostname == bsel]
   
   bitcoin:
-    image: vlddm/bitcoin-core:0.19.0.1
+    image: vlddm/bitcoin-core
     command: 
       -printtoconsole 
       -debug=0
@@ -125,8 +115,6 @@ services:
     deploy:
       mode: replicated
       replicas: 1
-      placement:
-        constraints: [node.hostname == bsel]
 
   nem:
     image: vlddm/nem-nis-node
@@ -138,8 +126,6 @@ services:
     deploy:
       mode: replicated
       replicas: 1
-      placement:
-        constraints: [node.hostname == esel]
 
   neo:
     image: vlddm/neo-full-node
@@ -151,8 +137,6 @@ services:
     deploy:
       mode: replicated
       replicas: 1
-      placement:
-        constraints: [node.hostname == bsel]
 
   ethereum:
     image: ethereum/client-go
@@ -175,22 +159,19 @@ services:
     deploy:
       mode: replicated
       replicas: 1
-      placement:
-        constraints: [node.hostname == esel]
 
   ripple:
-    image: xrptipbot/rippled
+    image: vlddm/rippled
 ## rpc port should not be exposed outside. its availabe in overlay network by default
     volumes: 
       - /data/nodes/ripple:/var/lib/rippled
     ports:
-      - 80:80
+      - 51235:51235
+      - 5005:5005
 #      should not be exposed outside in production
     deploy:
       mode: replicated
       replicas: 1
-      placement:
-        constraints: [node.hostname == esel]
 
   status:
     image: vlddm/cryptonodes-status
@@ -206,10 +187,12 @@ services:
       - BRPC_URL_Neo=http://neo:10332
       - BRPC_URL_Nem=http://nem:7890
       - BRPC_URL_Eth=http://ethereum:8545
+      - BRPC_URL_Ripple=http://ripple:5005
+      - BRPC_URL_Tron=https://api.trongrid.io
       - STATUS_PORT=8085
     deploy:
       mode: replicated
-      replicas: 2
+      replicas: 1
 
 networks:
   default:

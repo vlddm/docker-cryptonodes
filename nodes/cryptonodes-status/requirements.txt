@@ -1,3 +1,5 @@
 python-bitcoinlib 
 jsonrpcclient[requests]
 web3
+tronapi
+python-ripple-lib

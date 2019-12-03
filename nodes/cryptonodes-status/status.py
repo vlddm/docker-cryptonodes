@@ -4,6 +4,8 @@ from http.server import HTTPServer, BaseHTTPRequestHandler
 import os, sys, traceback
 import bitcoin.rpc 
 from web3 import Web3
+from tronapi import Tron
+from ripple_api import RippleRPCClient
 from jsonrpcclient.clients.http_client import HTTPClient
 from requests.auth import HTTPDigestAuth
 import requests
@@ -37,10 +39,26 @@ def getEthBlockCount(url):
     w3 = Web3(Web3.HTTPProvider(url))
     return w3.eth.blockNumber
 
+def getTronBlockCount(url):
+    tron = Tron(full_node=url,
+            solidity_node=url,
+            event_server=url)
+    current_block = tron.trx.get_current_block()
+    return current_block['block_header']['raw_data']['number']
+
+def getRippleBlockCount(url):
+    rpc = RippleRPCClient(url)
+
+
 def getBitcoinBlockCount(url):
     rpc = bitcoin.rpc.Proxy(service_url = url)
     blocks = rpc.call('getblockcount')
     return blocks
+
+def getRippleBlockCount(url):
+    data = '{"method":"ledger","params":[{"ledger_index":"validated","accounts":false,"full":false,"transactions":false,"expand":false,"owner_funds":false}]}'
+    response = requests.post( url, data=data)
+    return (response.json()['result']['ledger_index'])
 
 def worker():
     result = ''
@@ -56,8 +74,11 @@ def worker():
                 elif coin == 'Eth':
                     blocks = getEthBlockCount(url)
                 elif coin == 'Nem':
-                    print(coin)
                     blocks = getNemBlockCount(url)
+                elif coin == 'Tron':
+                    blocks = getTronBlockCount(url)
+                elif coin == 'Ripple':
+                    blocks = getRippleBlockCount(url)
                 else:
                     blocks = getBitcoinBlockCount(url)
                 output = "{0} block height: {1}\n".format(coin, blocks)
